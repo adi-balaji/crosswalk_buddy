@@ -1,3 +1,10 @@
+"""
+Bayesian State Estimation for Crosswalk Buddy
+Description: This file contains the implementation of the Bayesian Estimation algorithm for the estimation theta between robot and pedestrian.
+Author: Advaith Balaji
+Progress: In development
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation

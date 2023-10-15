@@ -1,3 +1,10 @@
+"""
+Pedestrian Tracking Scripts for Crosswalk Buddy
+Description: This file contains the implementation of the pedestrian tracking algorithm for the Crosswalk Buddy robot utilizing HOG and YOLO. It tracks the centroid of the pedestrian and uses bayesian_estimation.py to estimate the angle between the robot and the pedestrian.
+Author: Advaith Balaji
+Progress: In development
+"""
+
 import cv2
 import imutils
 import math
@@ -6,8 +13,6 @@ import numpy as np
 from bayesian_estimation import BayesianEstimator
 from bayesian_estimation import SensorProbabilityDistribution
 from params import Params
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 
 detector_params = Params()
 
@@ -121,18 +126,20 @@ cv2.destroyAllWindows()
 
 # # Load YOLO
 # net = cv2.dnn.readNet(
-#     "yolov3.weights",
-#     "yolov3.cfg",
+#     "extra_files/yolov3.weights",
+#     "extra_files/yolov3.cfg",
 # )  # Replace with the paths to your YOLO model and configuration files
 # layer_names = net.getLayerNames()
 # output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 
-# cap = cv2.VideoCapture('pedestrian.mp4')
+# params = Params()
+
+# cap = cv2.VideoCapture('extra_files/pedestrian.mp4')
 
 # cam_fov = 60  # in degrees
 # num_theta_states = cam_fov
 # b = BayesianEstimator(num_theta_states)
-# camera_sensor = SensorProbabilityDistribution(12, 1, num_theta_states)
+# camera_sensor = SensorProbabilityDistribution(params.camera_sigma, -19, num_theta_states)
 
 # while cap.isOpened():
 #     ret, image = cap.read()
@@ -179,10 +186,9 @@ cv2.destroyAllWindows()
 #                     -1,
 #                 )
 
-#                 # camera_sensor.update_sensor_reading(calc_x_theta(mean_centroid[0]))
-#                 # b.sensor_fusion(camera_sensor.particle_weights)
-
-#                 print(calc_x_theta(mean_centroid[0]))
+#                 camera_sensor.update_sensor_reading(calc_x_theta(mean_centroid[0]))
+#                 b.sensor_fusion(camera_sensor.particle_weights)
+#                 b.show_belief_distribution()
 
 #                 # Clear the list of detected centroids for the next frame
 #                 centroids.clear()
@@ -196,5 +202,3 @@ cv2.destroyAllWindows()
 
 # cap.release()
 # cv2.destroyAllWindows()
-# b.show_belief_distribution()
-
