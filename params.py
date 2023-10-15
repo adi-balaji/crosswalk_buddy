@@ -15,8 +15,7 @@ class Params:
         self.camera_focal_length = 35
 
         # in pixels
-        # self.img_res = [225, 400]
-        self.img_res = [1080, 1920]
+        self.img_res = [225, 400]
 
         # std dev of camera sensor
         self.camera_sigma = 20

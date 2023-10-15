@@ -36,6 +36,11 @@ class BayesianEstimator:
         plt.grid(True)
         plt.ion()
         plt.show()
+
+    def add_noise(self, noise_sigma):
+        noise = np.random.normal(0, noise_sigma, self.num_states)
+        self.beliefs = self.beliefs + noise
+        self.normalize_belief()
     
     def __init__(self, n_states, beliefs = None):
         self.num_states = n_states

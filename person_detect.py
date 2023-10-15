@@ -14,11 +14,11 @@ from bayesian_estimation import BayesianEstimator
 from bayesian_estimation import SensorProbabilityDistribution
 from params import Params
 
-detector_params = Params()
+Params = Params()
 
 def calc_x_theta(x_centroid):
-    img_width = detector_params.img_res[1]  # in pixels
-    f = detector_params.camera_focal_length # in mm
+    img_width = Params.img_res[1]  # in pixels
+    f = Params.camera_focal_length # in mm
     x_theta_rad = math.atan2((img_width / 2) - x_centroid, f)
     x_theta_deg = -math.degrees(x_theta_rad)
 
@@ -46,10 +46,11 @@ cap = cv2.VideoCapture('extra_files/pedestrian.mp4')
 bounding_boxes = []
 centroids = []
 
-num_theta_states = detector_params.camera_fov
+num_theta_states = Params.camera_fov
 b = BayesianEstimator(num_theta_states)
-camera_sensor = SensorProbabilityDistribution(detector_params.camera_sigma, -19, num_theta_states)
-lidar_sensor = SensorProbabilityDistribution(detector_params.lidar_sigma, -20, num_theta_states)
+camera_sensor = SensorProbabilityDistribution(Params.camera_sigma, -19, num_theta_states)
+lidar_sensor = SensorProbabilityDistribution(Params.lidar_sigma, -20, num_theta_states)
+ctr = 0
 
 while cap.isOpened():
     # Reading the video stream
@@ -106,6 +107,7 @@ while cap.isOpened():
 
             camera_sensor.update_sensor_reading(theta_to_object)
             b.sensor_fusion(camera_sensor.particle_weights)
+            # b.add_noise(0.001)
             b.show_belief_distribution()
         
         # Showing the output Image
