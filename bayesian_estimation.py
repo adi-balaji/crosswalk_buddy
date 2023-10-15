@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import os
 
 class BayesianEstimator:
 
@@ -20,11 +21,13 @@ class BayesianEstimator:
         return f"beliefs_max={max(self.beliefs)}, beliefs_size={len(self.beliefs)}, num_states={self.num_states})"
     
     def show_belief_distribution(self):
+        plt.clf()
         plt.plot(range(-self.num_states // 2,self.num_states // 2), self.beliefs, label="Belief Distribution")
         plt.xlabel("State")
         plt.ylabel("Likelihood")
         plt.title("Belief distribution")
         plt.grid(True)
+        plt.ion()
         plt.show()
     
     def __init__(self, n_states, beliefs = None):

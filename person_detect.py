@@ -43,7 +43,8 @@ centroids = []
 
 num_theta_states = detector_params.camera_fov
 b = BayesianEstimator(num_theta_states)
-camera_sensor = SensorProbabilityDistribution(12, -19, num_theta_states)
+camera_sensor = SensorProbabilityDistribution(detector_params.camera_sigma, -19, num_theta_states)
+lidar_sensor = SensorProbabilityDistribution(detector_params.lidar_sigma, -20, num_theta_states)
 
 while cap.isOpened():
     # Reading the video stream
