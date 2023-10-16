@@ -11,7 +11,7 @@ class MotionController:
         self.vel = vel
         self.kp = kp
 
-    def drive(pedestrian_theta):
+    def drive(self, pedestrian_theta):
         if pedestrian_theta == None:
             drive_command = self.vel
             print("Drive " + str(drive_command))

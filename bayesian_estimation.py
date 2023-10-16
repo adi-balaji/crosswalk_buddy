@@ -27,14 +27,16 @@ class BayesianEstimator:
     def __str__(self):
         return f"beliefs_max={max(self.beliefs)}, beliefs_size={len(self.beliefs)}, num_states={self.num_states})"
     
-    def show_belief_distribution(self):
-        plt.clf()
+    def show_belief_distribution(self, realtime = False):
+        if(realtime):
+            plt.clf()
         plt.plot(range(-self.num_states // 2,self.num_states // 2), self.beliefs, label="Belief Distribution")
         plt.xlabel("State")
         plt.ylabel("Likelihood")
         plt.title("Belief distribution")
         plt.grid(True)
-        plt.ion()
+        if(realtime):
+            plt.ion()
         plt.show()
 
     def add_noise(self, noise_sigma):

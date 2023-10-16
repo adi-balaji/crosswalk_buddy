@@ -107,8 +107,7 @@ while cap.isOpened():
 
             camera_sensor.update_sensor_reading(theta_to_object)
             b.sensor_fusion(camera_sensor.particle_weights)
-            # b.add_noise(0.001)
-            b.show_belief_distribution()
+            b.show_belief_distribution(realtime=True)
         
         # Showing the output Image
         cv2.flip(image, 1)
