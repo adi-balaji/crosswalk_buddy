@@ -10,22 +10,38 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import os
 
+def plot(data):
+    num_states = len(data)
+    plt.plot(range(-num_states // 2,num_states // 2), data, label="Motion Model")
+    plt.xlabel("State")
+    plt.ylabel("Likelihood")
+    plt.title("Motion Model")
+    plt.grid(True)
+    plt.show()
+
 class BayesianEstimator:
 
     def normalize_belief(self):
         self.beliefs = self.beliefs / np.sum(self.beliefs)
 
-    def sensor_fusion(self, particle_weights):
+    def sensor_fusion(self, weights):
         beliefs_as_arr = np.array(self.beliefs)
-        particle_weights_arr = np.array(particle_weights)
+        weights_arr = np.array(weights)
 
-        new_belief = beliefs_as_arr * abs(particle_weights_arr)
+        new_belief = beliefs_as_arr * abs(weights_arr)
 
         self.beliefs = new_belief.tolist()
         self.normalize_belief()
 
-    def __str__(self):
-        return f"beliefs_max={max(self.beliefs)}, beliefs_size={len(self.beliefs)}, num_states={self.num_states})"
+    def motion_fusion(self, weights):
+        beliefs_as_arr = np.array(self.beliefs)
+        weights_arr = np.array(weights)
+
+        new_belief = beliefs_as_arr * abs(weights_arr)
+
+        self.beliefs = new_belief.tolist()
+        self.normalize_belief()
+
     
     def show_belief_distribution(self, realtime = False):
         if(realtime):
@@ -50,8 +66,7 @@ class BayesianEstimator:
         self.normalize_belief()
 
 
-    
-class SensorProbabilityDistribution:
+class SensorModel:
 
     def compute_gaussian_distribution(self):
         self.particle_weights = [
@@ -78,17 +93,80 @@ class SensorProbabilityDistribution:
         self.particle_weights = list(range(-num_states // 2, num_states // 2))
         self.compute_gaussian_distribution()
 
+class PedestrianMotionModel:
+
+    motion_model_sigma = 25 #uncertainty of motion model
+    noise_sigma = 0.0005 #noise constant
+
+    def compute_gaussian_distribution(self):
+        self.state_curve = [
+            (1 / (self.motion_model_sigma * np.sqrt(2 * np.pi))) * (np.e ** (-0.5 * (((x - self.current_state) / self.motion_model_sigma) ** 2))) for x in self.state_curve
+        ]
+
+    def normalize_state_curve(self):
+        self.state_curve = self.state_curve / np.sum(self.state_curve)
+
+    def __init__(self, current_state, dtheta, num_states):
+        self.current_state = current_state
+        self.dtheta = dtheta
+        self.num_states = num_states
+        self.state_curve = list(range(-num_states // 2, num_states // 2))
+        self.compute_gaussian_distribution()
+        self.normalize_state_curve()
+
+    def add_noise(self):
+        noise = np.random.normal(0, self.noise_sigma, self.num_states)
+        self.state_curve = self.state_curve + noise
+        self.normalize_state_curve()
+
+    def update_motion_model(self):
+        self.state_curve = list(range(-len(self.state_curve)//2,len(self.state_curve)//2)) # reset
+        self.current_state += self.dtheta
+        self.compute_gaussian_distribution()
+        # self.add_noise()
+        # self.normalize_state_curve()
+
+    def show_state_curve(self, realtime=False):
+        if(realtime):
+            plt.clf()
+        plt.plot(range(-self.num_states // 2,self.num_states // 2), self.state_curve, label="Motion Model")
+        plt.xlabel("State")
+        plt.ylabel("Likelihood")
+        plt.title("Motion Model")
+        plt.grid(True)
+        if(realtime):
+            plt.ion()
+        plt.show()
+
+
 #---------------------------------------------------------------- END HELPER CLASSES ------------------------------------------------------------------------------------------
 
 #For testing purposes
 
 # n_states = 120
-# b = BayesianEstimator(n_states)
-# camera = SensorProbabilityDistribution(12, -11, n_states)
-# b.sensor_fusion(camera.particle_weights)
-# camera.update_sensor_reading(-8)
-# b.show_belief_distribution()
+# motion = PedestrianMotionModel(current_state=-11, dtheta=30, num_states=n_states)
+# belief = BayesianEstimator(n_states=n_states)
+# sensor = SensorModel(stddev=12, mean=-11, num_states=n_states)
+# sensy = SensorModel(stddev=30, mean=-11, num_states=n_states)
 
+# for i in range(1,100):
+#     sensor.update_sensor_reading(-11)
+#     belief.sensor_fusion(sensor.particle_weights)
+#     sensy.update_sensor_reading(-11 + i)
+#     belief.sensor_fusion(sensy.particle_weights)
+#     belief.show_belief_distribution(realtime=False)
+
+
+
+
+
+
+
+
+
+
+    
+    
 
 
 
