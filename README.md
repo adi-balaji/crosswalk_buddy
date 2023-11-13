@@ -5,7 +5,7 @@ Crosswalk Buddy is an independent research project under UM Robotics with the go
 <br>
 
 <p align="center">
-  <img src="https://github.com/adi-balaji/crosswalk_buddy/assets/92126728/4ce6a316-594b-4833-9bd7-d38d04ea8814" alt="Image">
+  <img src="https://github.com/adi-balaji/crosswalk_buddy/initial_cad.png" alt="Image">
   <br>
   <sub><em>Crosswalk Buddy (initial CAD by Annalise Richmond)</em></sub>
 </p>
