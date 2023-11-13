@@ -13,7 +13,7 @@ This repository contains code **in development** to be applied on a prototype th
 <br>
 
 <p align="center">
-  <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/initial_cad.png" alt="Image">
+  <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/initial_cad.png" alt="Image">
   <br>
   <sub><em>Crosswalk Buddy (initial CAD by Annalise Richmond)</em></sub>
 </p>
