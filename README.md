@@ -4,6 +4,14 @@ Crosswalk Buddy is an independent research project under UM Robotics with the go
 
 <br>
 
+This research project will be done in 2 phases. The first phase includes development of a VR robot simulation platform on Unity in order to test the nature of human-robot interaction in the pedestrian space. We will conduct VR crosswalk trials with the simulated robot on humans and gather data that helps us determine the effect of different robot configurations on making a pleasant crosswalk experience. We aim to analyze the effect of various robot positions, proximities, alert modalities, motion planning methods, etc on humans' perceived sense of safety, trust in the robot, and comfortability. The second phase includes prototyping and iterating on robot design according to the findings of phase 1 and testing various designs in real world scenarios. We aim to develop a full autonomous navigation software stack to support pedestrian tracking and state estimation, motion planning and driver alert systems.
+
+<br>
+
+This repository contains code **in development** to be applied on a prototype that will be tested in real world crosswalk scenarios at MCity.
+
+<br>
+
 <p align="center">
   <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/initial_cad.png" alt="Image">
   <br>
