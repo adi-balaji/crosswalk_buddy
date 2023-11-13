@@ -4,8 +4,16 @@ Crosswalk Buddy is an independent research project under UM Robotics with the go
 
 <br>
 
+This research project will be done in 2 phases. The first phase includes development of a VR robot simulation platform on Unity in order to test the nature of human-robot interaction in the pedestrian space. We will conduct VR crosswalk trials with the simulated robot on humans and gather data that helps us determine the effect of different robot configurations on making a pleasant crosswalk experience. We aim to analyze the effect of various robot positions, proximities, alert modalities, motion planning methods, etc on humans' perceived sense of safety, trust in the robot, and comfortability. The second phase includes prototyping and iterating on robot design according to the findings of phase 1 and testing various designs in real world scenarios. We aim to develop a full autonomous navigation software stack to support pedestrian tracking and state estimation, motion planning and driver alert systems.
+
+<br>
+
+This repository contains code **in development** to be applied on a prototype that will be tested in real world crosswalk scenarios at MCity.
+
+<br>
+
 <p align="center">
-  <img src="https://github.com/adi-balaji/crosswalk_buddy/assets/92126728/4ce6a316-594b-4833-9bd7-d38d04ea8814" alt="Image">
+  <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/initial_cad.png" alt="Image">
   <br>
   <sub><em>Crosswalk Buddy (initial CAD by Annalise Richmond)</em></sub>
 </p>
@@ -15,11 +23,11 @@ Crosswalk Buddy is an independent research project under UM Robotics with the go
 
 - **params.py:** Contains global parameters for the bayesian state estimator, person tracking algorithm, and robot motion controller.
 
-- **bayesian_estimator:** Provides a Bayesian state estimation class that allows modeling of the pedestrian state (in the angle between the robot and person centroid) probabilistically, enabling the use of multiple sensor inputs.
+- **bayesian_estimator:** Provides a Bayesian state estimation class that allows modeling of the pedestrian state probabilistically, enabling the use of multiple sensor inputs. Currently estimates pedestrian state as horizontal angle between robot and pedestrian in the robot coordinate frame. 
 
-- **person_detect.py:** Offers a pedestrian tracking algorithm utilizing yolov3 to track the centroid of the detected person, as well as the angle between the robot and pedestrian.
+- **person_detect.py:** Offers a pedestrian tracking algorithm utilizing yolov3 or HOG Descriptor to track the centroid of the detected person, as well as the angle between the robot and pedestrian.
 
-- **motion_controller.py:** Currently in progress.
+- **motion_controller.py:** Motion controller to maintain a certain constant position relative to moving pedestrian. **Currently in progress**.
 
 ## Researchers
 
