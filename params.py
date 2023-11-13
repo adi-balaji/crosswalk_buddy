@@ -3,15 +3,15 @@ Parameters for Crosswalk Buddy robot
 Description: This file contains the parameters for the Crosswalk Buddy robot used in the other scripts
 Author: Advaith Balaji
 Progress: In development
-""" 
+"""
+
 
 class Params:
     def __init__(self):
-
         # in degrees
-        self.camera_fov = 120 
+        self.camera_fov = 120
 
-        #in mm 
+        # in mm
         self.camera_focal_length = 35
 
         # in pixels

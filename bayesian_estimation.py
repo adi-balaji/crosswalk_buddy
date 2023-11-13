@@ -10,17 +10,19 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import os
 
-def plot(data):
+
+# helper fucntion that plots any list/array
+def plot_curve(data):
     num_states = len(data)
-    plt.plot(range(-num_states // 2,num_states // 2), data, label="Motion Model")
+    plt.plot(range(-num_states // 2, num_states // 2), data, label="Motion Model")
     plt.xlabel("State")
     plt.ylabel("Likelihood")
     plt.title("Motion Model")
     plt.grid(True)
     plt.show()
 
-class BayesianEstimator:
 
+class BayesianEstimator:
     def normalize_belief(self):
         self.beliefs = self.beliefs / np.sum(self.beliefs)
 
@@ -42,16 +44,19 @@ class BayesianEstimator:
         self.beliefs = new_belief.tolist()
         self.normalize_belief()
 
-    
-    def show_belief_distribution(self, realtime = False):
-        if(realtime):
+    def show_belief_distribution(self, realtime=False):
+        if realtime:
             plt.clf()
-        plt.plot(range(-self.num_states // 2,self.num_states // 2), self.beliefs, label="Belief Distribution")
+        plt.plot(
+            range(-self.num_states // 2, self.num_states // 2),
+            self.beliefs,
+            label="Belief Distribution",
+        )
         plt.xlabel("State")
         plt.ylabel("Likelihood")
         plt.title("Belief distribution")
         plt.grid(True)
-        if(realtime):
+        if realtime:
             plt.ion()
         plt.show()
 
@@ -59,18 +64,19 @@ class BayesianEstimator:
         noise = np.random.normal(0, noise_sigma, self.num_states)
         self.beliefs = self.beliefs + noise
         self.normalize_belief()
-    
-    def __init__(self, n_states, beliefs = None):
+
+    def __init__(self, n_states, beliefs=None):
         self.num_states = n_states
-        self.beliefs = [1/self.num_states] * self.num_states
+        self.beliefs = [1 / self.num_states] * self.num_states
         self.normalize_belief()
 
 
 class SensorModel:
-
     def compute_gaussian_distribution(self):
         self.particle_weights = [
-            (1 / (self.stddev * np.sqrt(2 * np.pi))) * (np.e ** (-0.5 * (((x - self.mean) / self.stddev) ** 2))) for x in self.particle_weights
+            (1 / (self.stddev * np.sqrt(2 * np.pi)))
+            * (np.e ** (-0.5 * (((x - self.mean) / self.stddev) ** 2)))
+            for x in self.particle_weights
         ]
 
     def update_sensor_reading(self, sensor_reading):
@@ -79,28 +85,40 @@ class SensorModel:
         self.compute_gaussian_distribution()
 
     def show_particle_distribution(self):
-        plt.plot(range(-len(self.particle_weights)//2,len(self.particle_weights)//2), self.particle_weights, label="Sensor pdf")
+        plt.plot(
+            range(-len(self.particle_weights) // 2, len(self.particle_weights) // 2),
+            self.particle_weights,
+            label="Sensor pdf",
+        )
         plt.grid(True)
         plt.show()
-    
+
     def reset_weights(self):
-        self.particle_weights = list(range(-len(self.particle_weights)//2,len(self.particle_weights)//2))
+        self.particle_weights = list(
+            range(-len(self.particle_weights) // 2, len(self.particle_weights) // 2)
+        )
 
-    def __init__(self, stddev, mean, num_states, particle_weights = None):
-        self.stddev = stddev    #tune according to sensor
+    def __init__(self, stddev, mean, num_states, particle_weights=None):
+        self.stddev = stddev  # tune according to sensor
 
-        self.mean = mean    #plug in sensor reading
+        self.mean = mean  # plug in sensor reading
         self.particle_weights = list(range(-num_states // 2, num_states // 2))
         self.compute_gaussian_distribution()
 
-class PedestrianMotionModel:
 
-    motion_model_sigma = 25 #uncertainty of motion model
-    noise_sigma = 0.0005 #noise constant
+# TODO: incomplete pedestrian action model
+class PedestrianMotionModel:
+    motion_model_sigma = 35  # uncertainty of motion model
+    noise_sigma = 0.0005  # noise constant
 
     def compute_gaussian_distribution(self):
         self.state_curve = [
-            (1 / (self.motion_model_sigma * np.sqrt(2 * np.pi))) * (np.e ** (-0.5 * (((x - self.current_state) / self.motion_model_sigma) ** 2))) for x in self.state_curve
+            (1 / (self.motion_model_sigma * np.sqrt(2 * np.pi)))
+            * (
+                np.e
+                ** (-0.5 * (((x - self.current_state) / self.motion_model_sigma) ** 2))
+            )
+            for x in self.state_curve
         ]
 
     def normalize_state_curve(self):
@@ -120,64 +138,39 @@ class PedestrianMotionModel:
         self.normalize_state_curve()
 
     def update_motion_model(self):
-        self.state_curve = list(range(-len(self.state_curve)//2,len(self.state_curve)//2)) # reset
+        self.state_curve = list(
+            range(-len(self.state_curve) // 2, len(self.state_curve) // 2)
+        )  # reset
         self.current_state += self.dtheta
         self.compute_gaussian_distribution()
         # self.add_noise()
         # self.normalize_state_curve()
 
     def show_state_curve(self, realtime=False):
-        if(realtime):
+        if realtime:
             plt.clf()
-        plt.plot(range(-self.num_states // 2,self.num_states // 2), self.state_curve, label="Motion Model")
+        plt.plot(
+            range(-self.num_states // 2, self.num_states // 2),
+            self.state_curve,
+            label="Motion Model",
+        )
         plt.xlabel("State")
         plt.ylabel("Likelihood")
         plt.title("Motion Model")
         plt.grid(True)
-        if(realtime):
+        if realtime:
             plt.ion()
         plt.show()
 
 
-#---------------------------------------------------------------- END HELPER CLASSES ------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------- END HELPER CLASSES ------------------------------------------------------------------------------------------
 
-#For testing purposes
+# For testing purposes
 
 # n_states = 120
-# motion = PedestrianMotionModel(current_state=-11, dtheta=30, num_states=n_states)
+# motion = PedestrianMotionModel(current_state=-11, dtheta=1, num_states=n_states)
 # belief = BayesianEstimator(n_states=n_states)
 # sensor = SensorModel(stddev=12, mean=-11, num_states=n_states)
 # sensy = SensorModel(stddev=30, mean=-11, num_states=n_states)
-
-# for i in range(1,100):
-#     sensor.update_sensor_reading(-11)
-#     belief.sensor_fusion(sensor.particle_weights)
-#     sensy.update_sensor_reading(-11 + i)
-#     belief.sensor_fusion(sensy.particle_weights)
-#     belief.show_belief_distribution(realtime=False)
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-              
+# belief.sensor_fusion(sensor.particle_weights)
+# belief.show_belief_distribution()

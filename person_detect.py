@@ -17,13 +17,16 @@ from params import Params
 
 Params = Params()
 
+
+# horizontal angle between pedestrian and robot
 def calc_x_theta(x_centroid):
     img_width = Params.img_res[1]  # in pixels
-    f = Params.camera_focal_length # in mm
+    f = Params.camera_focal_length  # in mm
     x_theta_rad = math.atan2((img_width / 2) - x_centroid, f)
     x_theta_deg = -math.degrees(x_theta_rad)
 
     return x_theta_deg.__round__(2)
+
 
 def sim_drive(theta):
     vel = 0.5
@@ -41,7 +44,7 @@ def sim_drive(theta):
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-cap = cv2.VideoCapture('extra_files/pedestrian.mp4')
+cap = cv2.VideoCapture("extra_files/pedestrian.mp4")
 # cap = cv2.VideoCapture(0)
 
 bounding_boxes = []
@@ -51,8 +54,8 @@ num_theta_states = Params.camera_fov
 b = BayesianEstimator(num_theta_states)
 camera_sensor = SensorModel(Params.camera_sigma, -19, num_theta_states)
 lidar_sensor = SensorModel(Params.lidar_sigma, -20, num_theta_states)
-motion = PedestrianMotionModel(-19, 1, num_theta_states)
-dtheta_motion_model = 0.01
+dtheta_motion_model = 0.25
+motion = PedestrianMotionModel(-19, dtheta_motion_model, num_theta_states)
 
 while cap.isOpened():
     # Reading the video stream
@@ -107,11 +110,10 @@ while cap.isOpened():
 
             theta_to_object = calc_x_theta(mean_centroid[0])
 
-
             camera_sensor.update_sensor_reading(theta_to_object)
             b.sensor_fusion(camera_sensor.particle_weights)
             b.show_belief_distribution(realtime=True)
-        
+
         # Showing the output Image
         cv2.flip(image, 1)
         cv2.imshow("Person Detection", image)
