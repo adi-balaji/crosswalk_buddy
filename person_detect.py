@@ -130,6 +130,22 @@ cv2.destroyAllWindows()
 # import numpy as np
 # import math
 
+# from bayesian_estimation import BayesianEstimator
+# from bayesian_estimation import SensorModel
+# from bayesian_estimation import PedestrianMotionModel
+# from params import Params
+
+
+# # horizontal angle between pedestrian and robot
+# def calc_x_theta(x_centroid):
+#     img_width = params.img_res[1]  # in pixels
+#     f = params.camera_focal_length  # in mm
+#     x_theta_rad = math.atan2((img_width / 2) - x_centroid, f)
+#     x_theta_deg = -math.degrees(x_theta_rad)
+
+#     return x_theta_deg.__round__(2)
+
+
 # # Load YOLO
 # net = cv2.dnn.readNet(
 #     "extra_files/yolov3.weights",
@@ -140,7 +156,7 @@ cv2.destroyAllWindows()
 
 # params = Params()
 
-# cap = cv2.VideoCapture('extra_files/pedestrian.mp4')
+# cap = cv2.VideoCapture("extra_files/pedestrian.mp4")
 
 # cam_fov = 60  # in degrees
 # num_theta_states = cam_fov
