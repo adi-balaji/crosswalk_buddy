@@ -51,7 +51,7 @@ This repository contains code **in development** to be applied on a prototype th
   <br>
 
 <p align="center">
-    <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/kalman_ped_short.gif" alt="Ped Kalman Filter"/>
+    <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/kalman_ped_short.gif" width="830" height="431" alt="Ped Kalman Filter"/>
   </p>
   <p align="center">
     <em>One-Dimensional Kalman Filter working on pedestrian video feed</em>
