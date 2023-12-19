@@ -1,4 +1,7 @@
 """
+!!! DEPRECATED !!!
+This module is deprecated. Please refer to state_estimator.py for the latest, better implementation of pedestrian state estimation using 1D Kalman Filter.
+
 Bayesian State Estimation for Crosswalk Buddy
 Description: This file contains the implementation of the Bayesian Estimation algorithm for the estimation theta between robot and pedestrian.
 Author: Advaith Balaji
