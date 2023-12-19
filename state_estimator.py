@@ -7,7 +7,6 @@ Progress: In Progress
 
 import numpy as np
 import matplotlib.pyplot as plt
-import time
 
 class KalmanFilter:
 

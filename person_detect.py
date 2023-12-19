@@ -36,7 +36,7 @@ bounding_boxes = []
 centroids = []
 measurements = []
 
-k = KalmanFilter(0, 19, 0.2, 1, 19)
+k = KalmanFilter(0, 1, 0.5, 1.3, 19)
 
 while cap.isOpened():
     # Reading the video stream
@@ -91,7 +91,7 @@ while cap.isOpened():
 
             theta_to_object = calc_x_theta(mean_centroid[0])
             measurements.append(theta_to_object)
-            k.estimate(theta_to_object)
+            estimate = k.estimate(theta_to_object)
             k.show_graph(measurements)
 
         # Showing the output Image
