@@ -32,7 +32,7 @@ This repository contains code **in development** to be applied on a prototype th
 <p align="center">
   <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/working_bayesian.gif" alt="Image">
   <br>
-  <sub><em>Bayesian State Estimator with state reading from person_detect.py </em></sub>
+  <em>Bayesian State Estimator with state reading from person_detect.py </em>
 </p>
 
 <br>
@@ -41,10 +41,20 @@ This repository contains code **in development** to be applied on a prototype th
   
   <p align="center">
     <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/kalman_dynamix.gif" alt="Dynamic Kalman Filter" width="45%"/>
+
+   
     <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/kalman_statix.gif" alt="Static Kalman Filter" width="45%"/>
   </p>
   <p align="center">
     <em>One-Dimensional Kalman Filter working on test data</em>
+  </p>
+  <br>
+
+<p align="center">
+    <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/kalman_ped_short.gif" alt="Ped Kalman Filter"/>
+  </p>
+  <p align="center">
+    <em>One-Dimensional Kalman Filter working on pedestrian video feed</em>
   </p>
   <br>
 
