@@ -62,7 +62,7 @@ class KalmanFilter:
 
 # ---------------------------------------------------------------- END CLASSES ------------------------------------------------------------------------------------------
 
-# For testing purposes
+# For testing with dummy data
 # xvals = np.linspace(0,100, 70)
 # yvals = 0.87 * xvals
 # dummy_truths = yvals
