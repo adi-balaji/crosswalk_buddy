@@ -15,10 +15,11 @@ class Params:
         self.camera_focal_length = 35
 
         # in pixels
+        # [1080, 1920] for YOLO and [225, 400] for HOG
         self.img_res = [225, 400]
 
         # std dev of camera sensor
-        self.camera_sigma = 20
+        self.camera_sigma = 30
 
         # std dev of lidar sensor
         self.lidar_sigma = 4

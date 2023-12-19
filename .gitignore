@@ -1,4 +1,5 @@
 /extra_files/
+sandbox.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -10,9 +10,7 @@ import imutils
 import math
 import numpy as np
 
-from bayesian_estimation import BayesianEstimator
-from bayesian_estimation import SensorModel
-from bayesian_estimation import PedestrianMotionModel
+from state_estimator import KalmanFilter
 from params import Params
 
 Params = Params()
@@ -25,20 +23,7 @@ def calc_x_theta(x_centroid):
     x_theta_rad = math.atan2((img_width / 2) - x_centroid, f)
     x_theta_deg = -math.degrees(x_theta_rad)
 
-    return x_theta_deg.__round__(2)
-
-
-def sim_drive(theta):
-    vel = 0.5
-    kp = 0.001
-    drive_command = 0
-    if math.fabs(theta) <= 15:
-        drive_command = vel
-        print("Drive " + str(drive_command))
-    else:
-        drive_command = vel + (theta * kp)
-        drive_command = drive_command.__round__(2)
-        print("Drive " + str(drive_command))
+    return x_theta_deg.__round__(4)
 
 
 hog = cv2.HOGDescriptor()
@@ -49,13 +34,9 @@ cap = cv2.VideoCapture("extra_files/pedestrian.mp4")
 
 bounding_boxes = []
 centroids = []
+measurements = []
 
-num_theta_states = Params.camera_fov
-b = BayesianEstimator(num_theta_states)
-camera_sensor = SensorModel(Params.camera_sigma, -19, num_theta_states)
-lidar_sensor = SensorModel(Params.lidar_sigma, -20, num_theta_states)
-dtheta_motion_model = 0.25
-motion = PedestrianMotionModel(-19, dtheta_motion_model, num_theta_states)
+k = KalmanFilter(0, 19, 0.2, 1, 19)
 
 while cap.isOpened():
     # Reading the video stream
@@ -109,10 +90,9 @@ while cap.isOpened():
             )
 
             theta_to_object = calc_x_theta(mean_centroid[0])
-
-            camera_sensor.update_sensor_reading(theta_to_object)
-            b.sensor_fusion(camera_sensor.particle_weights)
-            b.show_belief_distribution(realtime=True)
+            measurements.append(theta_to_object)
+            k.estimate(theta_to_object)
+            k.show_graph(measurements)
 
         # Showing the output Image
         cv2.flip(image, 1)
@@ -143,7 +123,7 @@ cv2.destroyAllWindows()
 #     x_theta_rad = math.atan2((img_width / 2) - x_centroid, f)
 #     x_theta_deg = -math.degrees(x_theta_rad)
 
-#     return x_theta_deg.__round__(2)
+#     return x_theta_deg
 
 
 # # Load YOLO
@@ -154,13 +134,12 @@ cv2.destroyAllWindows()
 # layer_names = net.getLayerNames()
 # output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 
-# params = Params()
-
 # cap = cv2.VideoCapture("extra_files/pedestrian.mp4")
 
-# cam_fov = 60  # in degrees
-# num_theta_states = cam_fov
+# params = Params()
+# num_theta_states = params.camera_fov
 # b = BayesianEstimator(num_theta_states)
+# m = PedestrianMotionModel(-19, 0.125, num_theta_states)
 # camera_sensor = SensorModel(params.camera_sigma, -19, num_theta_states)
 
 # while cap.isOpened():
@@ -209,8 +188,10 @@ cv2.destroyAllWindows()
 #                 )
 
 #                 camera_sensor.update_sensor_reading(calc_x_theta(mean_centroid[0]))
+#                 m.update_motion_model()
 #                 b.sensor_fusion(camera_sensor.particle_weights)
-#                 b.show_belief_distribution()
+#                 b.motion_fusion(m.state_curve)
+#                 b.show_belief_distribution(realtime=True)
 
 #                 # Clear the list of detected centroids for the next frame
 #                 centroids.clear()

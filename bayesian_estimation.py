@@ -2,14 +2,11 @@
 Bayesian State Estimation for Crosswalk Buddy
 Description: This file contains the implementation of the Bayesian Estimation algorithm for the estimation theta between robot and pedestrian.
 Author: Advaith Balaji
-Progress: In development
+Progress: DEPRECATED
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-import os
-
 
 # helper fucntion that plots any list/array
 def plot_curve(data):
@@ -30,16 +27,7 @@ class BayesianEstimator:
         beliefs_as_arr = np.array(self.beliefs)
         weights_arr = np.array(weights)
 
-        new_belief = beliefs_as_arr * abs(weights_arr)
-
-        self.beliefs = new_belief.tolist()
-        self.normalize_belief()
-
-    def motion_fusion(self, weights):
-        beliefs_as_arr = np.array(self.beliefs)
-        weights_arr = np.array(weights)
-
-        new_belief = beliefs_as_arr * abs(weights_arr)
+        new_belief = np.multiply(beliefs_as_arr, weights_arr)
 
         self.beliefs = new_belief.tolist()
         self.normalize_belief()
@@ -108,49 +96,21 @@ class SensorModel:
 
 # TODO: incomplete pedestrian action model
 class PedestrianMotionModel:
-    motion_model_sigma = 35  # uncertainty of motion model
-    noise_sigma = 0.0005  # noise constant
+    motion_model_sigma = 18  # uncertainty of motion model
 
-    def compute_gaussian_distribution(self):
-        self.state_curve = [
-            (1 / (self.motion_model_sigma * np.sqrt(2 * np.pi)))
-            * (
-                np.e
-                ** (-0.5 * (((x - self.current_state) / self.motion_model_sigma) ** 2))
-            )
-            for x in self.state_curve
+    def compute_gaussian_distribution(self, mu, sig):
+        distribution = range(-self.num_states // 2, self.num_states // 2)
+        return [
+            (1 / (sig * np.sqrt(2 * np.pi)))
+            * (np.e ** (-0.5 * (((x - mu) / sig) ** 2)))
+            for x in distribution
         ]
-
-    def normalize_state_curve(self):
-        self.state_curve = self.state_curve / np.sum(self.state_curve)
-
-    def __init__(self, current_state, dtheta, num_states):
-        self.current_state = current_state
-        self.dtheta = dtheta
-        self.num_states = num_states
-        self.state_curve = list(range(-num_states // 2, num_states // 2))
-        self.compute_gaussian_distribution()
-        self.normalize_state_curve()
-
-    def add_noise(self):
-        noise = np.random.normal(0, self.noise_sigma, self.num_states)
-        self.state_curve = self.state_curve + noise
-        self.normalize_state_curve()
-
-    def update_motion_model(self):
-        self.state_curve = list(
-            range(-len(self.state_curve) // 2, len(self.state_curve) // 2)
-        )  # reset
-        self.current_state += self.dtheta
-        self.compute_gaussian_distribution()
-        # self.add_noise()
-        # self.normalize_state_curve()
 
     def show_state_curve(self, realtime=False):
         if realtime:
             plt.clf()
         plt.plot(
-            range(-self.num_states // 2, self.num_states // 2),
+            # range(-self.num_states // 2, self.num_states // 2),
             self.state_curve,
             label="Motion Model",
         )
@@ -161,6 +121,12 @@ class PedestrianMotionModel:
         if realtime:
             plt.ion()
         plt.show()
+
+    def __init__(self, mu1, sig1, mu2, sig2, num_states):
+        self.num_states = num_states
+        x1 = self.compute_gaussian_distribution(mu1, sig1)
+        x2 = self.compute_gaussian_distribution(mu2, sig2)
+        self.state_curve = np.concatenate((x1, x2))
 
 
 # ---------------------------------------------------------------- END HELPER CLASSES ------------------------------------------------------------------------------------------
@@ -174,3 +140,6 @@ class PedestrianMotionModel:
 # sensy = SensorModel(stddev=30, mean=-11, num_states=n_states)
 # belief.sensor_fusion(sensor.particle_weights)
 # belief.show_belief_distribution()
+
+# m = PedestrianMotionModel(1, 10, 0, 30, 100)
+# m.show_state_curve(realtime=False)
