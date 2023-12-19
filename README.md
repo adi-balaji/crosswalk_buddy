@@ -22,10 +22,20 @@ This repository contains code **in development** to be applied on a prototype th
 ## Overview
 
 - **params.py:** Contains global parameters for the bayesian state estimator, person tracking algorithm, and robot motion controller.
-
-- **bayesian_estimator:** Provides a Bayesian state estimation class that allows modeling of the pedestrian state probabilistically, enabling the use of multiple sensor inputs. Currently estimates pedestrian state as horizontal angle between robot and pedestrian in the robot coordinate frame. 
-
+  
 - **person_detect.py:** Offers a pedestrian tracking algorithm utilizing yolov3 or HOG Descriptor to track the centroid of the detected person, as well as the angle between the robot and pedestrian.
+
+- **bayesian_estimator:** Provides a Bayesian state estimation class that allows modeling of the pedestrian state probabilistically, enabling the use of multiple sensor inputs. Currently estimates pedestrian state as horizontal angle between robot and pedestrian in the robot coordinate frame.
+
+<br>
+
+<p align="center">
+  <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/working_bayesian.gif" alt="Image">
+  <br>
+  <sub><em>Bayesian State Estimator with state reading from person_detect.py </em></sub>
+</p>
+
+<br>
 
 - **motion_controller.py:** Motion controller to maintain a certain constant position relative to moving pedestrian. **Currently in progress**.
 
