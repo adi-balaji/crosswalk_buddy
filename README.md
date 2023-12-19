@@ -25,7 +25,7 @@ This repository contains code **in development** to be applied on a prototype th
   
 - **person_detect.py:** Offers a pedestrian tracking algorithm utilizing yolov3 or HOG Descriptor to track the centroid of the detected person, as well as the angle between the robot and pedestrian.
 
-- **bayesian_estimator:** Provides a Bayesian state estimation class that allows modeling of the pedestrian state probabilistically, enabling the use of multiple sensor inputs. Currently estimates pedestrian state as horizontal angle between robot and pedestrian in the robot coordinate frame.
+- **bayesian_estimator.py:** *THIS MODULE IS DEPRECATED!!* Please refer to `state_estimator.py` for the latest, better implementation of pedestrian state estimation using 1D Kalman Filter. Currently estimates pedestrian state as horizontal angle between robot and pedestrian probabalistically in the robot coordinate frame.
 
 <br>
 
@@ -36,6 +36,17 @@ This repository contains code **in development** to be applied on a prototype th
 </p>
 
 <br>
+
+- **state_estimator.py:** Contains an implementation of a One-Dimensional Kalman Filter to model pedestrian state probabilistically, building upon the deprecated `bayesian_estimation.py`. Allows the use of multiple sensor inputs to generate reasonably accurate estimates. **Currently in progress**.
+  
+  <p align="center">
+    <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/kalman_dynamix.gif" alt="Dynamic Kalman Filter" width="45%"/>
+    <img src="https://github.com/adi-balaji/crosswalk_buddy/blob/main/github_assets/kalman_statix.gif" alt="Static Kalman Filter" width="45%"/>
+  </p>
+  <p align="center">
+    <em>One-Dimensional Kalman Filter working on test data</em>
+  </p>
+  <br>
 
 - **motion_controller.py:** Motion controller to maintain a certain constant position relative to moving pedestrian. **Currently in progress**.
 
