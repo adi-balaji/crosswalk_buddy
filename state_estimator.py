@@ -45,7 +45,7 @@ class KalmanFilter:
         plt.plot(measurements, label="Measurements", linestyle="-")
         if self.truths is not None:
             plt.plot(self.truths, label="Truths", color="g", linestyle="--")
-        plt.title("State Estimation with Kalman Filter for Static System")
+        plt.title("Pedestrian State Estimation with Kalman Filter")
         plt.legend()
         plt.show()
         plt.pause(0.065)
