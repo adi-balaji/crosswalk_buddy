@@ -25,7 +25,7 @@ This repository contains code **in development** to be applied on a prototype th
   
 - **person_detect.py:** Offers a pedestrian tracking algorithm utilizing yolov3 or HOG Descriptor to track the centroid of the detected person, as well as the angle between the robot and pedestrian.
 
-- **bayesian_estimator.py:** *THIS MODULE IS DEPRECATED!!* Please refer to `state_estimator.py` for the latest, better implementation of pedestrian state estimation using 1D Kalman Filter. Currently estimates pedestrian state as horizontal angle between robot and pedestrian probabalistically in the robot coordinate frame.
+- **bayesian_estimator.py:** This module is deprecated! Please refer to `state_estimator.py` for the latest, better implementation of pedestrian state estimation using 1D Kalman Filter. Currently estimates pedestrian state as horizontal angle between robot and pedestrian probabalistically in the robot coordinate frame.
 
 <br>
 
