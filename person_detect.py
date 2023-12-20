@@ -36,7 +36,7 @@ bounding_boxes = []
 centroids = []
 measurements = []
 
-k = KalmanFilter(0, 1, 0.5, 1.3, 19)
+k = KalmanFilter(-5, 19, 0.475, 3.75, 19)
 
 while cap.isOpened():
     # Reading the video stream
@@ -49,17 +49,8 @@ while cap.isOpened():
             image, winStride=(4, 4), padding=(20, 20), scale=1.01
         )
 
-        # Drawing the regions in the
-        # Image
-        # for x, y, w, h in regions:
-        #     centroid_x = x + w // 2
-        #     centroid_y = y + h // 2
-        #     cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
-        #     theta_to_object = calc_x_theta(centroid_x)
-        #     cv2.circle(image, (centroid_x, centroid_y), 5, (0, 255, 0), -1)
-
         for x, y, w, h in regions:
-            for i in range(1, 500):
+            for i in range(1, 100):
                 centroid = [x + w // 2, y + h // 2]
                 bounding_box = [x, y, x + w, y + h]
                 bounding_boxes.append(bounding_box)
@@ -91,8 +82,8 @@ while cap.isOpened():
 
             theta_to_object = calc_x_theta(mean_centroid[0])
             measurements.append(theta_to_object)
-            estimate = k.estimate(theta_to_object)
-            k.show_graph(measurements)
+            k.estimate(measurement=theta_to_object)
+            k.show_graph(measurements=measurements)
 
         # Showing the output Image
         cv2.flip(image, 1)

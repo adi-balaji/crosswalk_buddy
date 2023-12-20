@@ -12,7 +12,7 @@ class Params:
         self.camera_fov = 120
 
         # in mm
-        self.camera_focal_length = 35
+        self.camera_focal_length = 77
 
         # in pixels
         # [1080, 1920] for YOLO and [225, 400] for HOG
