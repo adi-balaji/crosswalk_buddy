@@ -15,8 +15,8 @@ class Params:
         self.camera_focal_length = 77
 
         # in pixels
-        # [1080, 1920] for YOLO and [225, 400] for HOG
-        self.img_res = [225, 400]
+        # self.img_res = [1080, 1920] # yolo
+        self.img_res = [225, 400] # HOG
 
         # std dev of camera sensor
         self.camera_sigma = 30

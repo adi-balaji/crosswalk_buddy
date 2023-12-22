@@ -9,6 +9,7 @@ import cv2
 import imutils
 import math
 import numpy as np
+import matplotlib.pyplot as plt
 
 from state_estimator import KalmanFilter
 from params import Params
@@ -25,18 +26,17 @@ def calc_x_theta(x_centroid):
 
     return x_theta_deg.__round__(4)
 
-
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-cap = cv2.VideoCapture("extra_files/pedestrian.mp4")
+cap = cv2.VideoCapture("extra_files/pedestrian2.mp4")
 # cap = cv2.VideoCapture(0)
 
 bounding_boxes = []
 centroids = []
-measurements = []
+measurements = [60]
 
-k = KalmanFilter(-5, 19, 0.475, 3.75, 19)
+k = KalmanFilter(60, 13, 0.675, 19.75, 13)
 
 while cap.isOpened():
     # Reading the video stream
@@ -81,7 +81,12 @@ while cap.isOpened():
             )
 
             theta_to_object = calc_x_theta(mean_centroid[0])
+
+            if(abs(theta_to_object - measurements[-1]) > 45):
+                measurements.append(measurements[-1])
+            
             measurements.append(theta_to_object)
+            print(theta_to_object)
             k.estimate(measurement=theta_to_object)
             k.show_graph(measurements=measurements)
 
@@ -101,9 +106,7 @@ cv2.destroyAllWindows()
 # import numpy as np
 # import math
 
-# from bayesian_estimation import BayesianEstimator
-# from bayesian_estimation import SensorModel
-# from bayesian_estimation import PedestrianMotionModel
+# from state_estimator import KalmanFilter
 # from params import Params
 
 
@@ -125,13 +128,12 @@ cv2.destroyAllWindows()
 # layer_names = net.getLayerNames()
 # output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 
-# cap = cv2.VideoCapture("extra_files/pedestrian.mp4")
+# cap = cv2.VideoCapture("extra_files/pedestrian2.mp4")
 
 # params = Params()
 # num_theta_states = params.camera_fov
-# b = BayesianEstimator(num_theta_states)
-# m = PedestrianMotionModel(-19, 0.125, num_theta_states)
-# camera_sensor = SensorModel(params.camera_sigma, -19, num_theta_states)
+# measurements = []
+# k = KalmanFilter(62.5, 19, 0.475, 12000, 19)
 
 # while cap.isOpened():
 #     ret, image = cap.read()
@@ -178,11 +180,10 @@ cv2.destroyAllWindows()
 #                     -1,
 #                 )
 
-#                 camera_sensor.update_sensor_reading(calc_x_theta(mean_centroid[0]))
-#                 m.update_motion_model()
-#                 b.sensor_fusion(camera_sensor.particle_weights)
-#                 b.motion_fusion(m.state_curve)
-#                 b.show_belief_distribution(realtime=True)
+#                 horizontal_angle = calc_x_theta(mean_centroid[0])
+#                 measurements.append(horizontal_angle)
+#                 k.estimate(horizontal_angle)
+#                 k.show_graph(measurements)
 
 #                 # Clear the list of detected centroids for the next frame
 #                 centroids.clear()
