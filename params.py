@@ -15,6 +15,7 @@ class Params:
         self.camera_focal_length = 77
 
         # in pixels
+        # self.img_res = [1080, 1920] # caffe
         # self.img_res = [1080, 1920] # yolo
         self.img_res = [225, 400] # HOG
 
