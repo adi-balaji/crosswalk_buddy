@@ -40,7 +40,7 @@ class KalmanFilter:
     def show_graph(self, measurements):
         plt.clf()
         plt.ion()
-        plt.plot(self.estimates, label="Estimate", marker=".")
+        plt.plot(self.estimates, label="Estimate", linestyle="-")
         plt.plot(measurements, label="Measurements", linestyle="-")
         if self.truths is not None:
             plt.plot(self.truths, label="Truths", color="g", linestyle="--")
